@@ -173,6 +173,7 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     return layoutAttributes;
 }
 
+
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
     [super applyLayoutAttributes:layoutAttributes];
@@ -188,9 +189,38 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     }
 
     self.textViewFrameInsets = customAttributes.textViewFrameInsets;
-
-    [self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
-                  withConstant:customAttributes.messageBubbleContainerViewWidth];
+    
+    if ([self isKindOfClass:[JSQMessagesCollectionViewCellOutgoing class]])
+    {
+        
+        JSQMessagesCollectionViewCellOutgoing *selfie=(JSQMessagesCollectionViewCellOutgoing*)self;
+        CGSize minimalsize = [selfie.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:15.0f]}];
+        
+        CGFloat finalWidth;
+        if (customAttributes.messageBubbleContainerViewWidth>(minimalsize.width+25))
+        {
+            finalWidth=customAttributes.messageBubbleContainerViewWidth;
+            //[self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
+                          //withConstant:customAttributes.messageBubbleContainerViewWidth];
+            
+        }
+        else
+        {
+            finalWidth=minimalsize.width+25;
+            //[self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
+                       // withConstant:minimalsize.width+25];
+            
+        }
+        // Values are fractional -- you should take the ceilf to get equivalent values
+     
+        //if bigger than minimum, allright!
+        
+        self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint withConstant:finalWidth];
+        
+    }
+    
+    
+    
 
     [self jsq_updateConstraint:self.cellTopLabelHeightConstraint
                   withConstant:customAttributes.cellTopLabelHeight];

@@ -96,8 +96,11 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
         _messageBubbleLeftRightMargin = 50.0f;
     }
     
-    _messageBubbleTextViewFrameInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 6.0f);
-    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(7.0f, 14.0f, 7.0f, 14.0f);
+    //CUSTOM MEBBLE LAYOUT
+    _messageBubbleTextViewFrameInsets = UIEdgeInsetsMake(32.0f, 0.0f, 0.0f, 6.0f);
+    
+   
+    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(2.0f, 14.0f, 7.0f, 14.0f);
     
     CGSize defaultAvatarSize = CGSizeMake(kJSQMessagesCollectionViewAvatarSizeDefault, kJSQMessagesCollectionViewAvatarSizeDefault);
     _incomingAvatarViewSize = defaultAvatarSize;
@@ -233,6 +236,7 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
 - (CGFloat)itemWidth
 {
     return CGRectGetWidth(self.collectionView.frame) - self.sectionInset.left - self.sectionInset.right;
+    //return 200.0f;
 }
 
 - (UIDynamicAnimator *)dynamicAnimator
@@ -478,7 +482,7 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     
     [self.messageBubbleCache setObject:[NSValue valueWithCGSize:finalSize] forKey:@([messageItem messageHash])];
     
-    return finalSize;
+    return CGSizeMake(300, finalSize.height);
 }
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath

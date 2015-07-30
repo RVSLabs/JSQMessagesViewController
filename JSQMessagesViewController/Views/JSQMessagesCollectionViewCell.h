@@ -203,4 +203,8 @@
  */
 + (void)registerMenuAction:(SEL)action;
 
+//MEBBLE NICKNAME LABEL
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *nickNameLabel;
+
+
 @end
