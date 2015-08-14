@@ -176,6 +176,7 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
+    
     [super applyLayoutAttributes:layoutAttributes];
 
     JSQMessagesCollectionViewLayoutAttributes *customAttributes = (JSQMessagesCollectionViewLayoutAttributes *)layoutAttributes;
@@ -190,34 +191,80 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
 
     self.textViewFrameInsets = customAttributes.textViewFrameInsets;
     
+     if ([self isKindOfClass:[JSQMessagesCollectionViewCellIncoming class]])
+     {
+
+         JSQMessagesCollectionViewCellOutgoing *selfie=(JSQMessagesCollectionViewCellOutgoing*)self;
+         CGSize minimalWidth = [selfie.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:15.0f]}];
+         
+         CGFloat finalWidth;
+         if (customAttributes.messageBubbleContainerViewWidth>(minimalWidth.width+25))
+         {
+             finalWidth=customAttributes.messageBubbleContainerViewWidth;
+             
+             //[self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
+             //withConstant:customAttributes.messageBubbleContainerViewWidth];
+             
+         }
+         else
+         {
+             finalWidth=minimalWidth.width+25;
+             //[self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
+             // withConstant:minimalsize.width+25];
+             
+         }
+         
+         // Values are fractional -- you should take the ceilf to get equivalent values
+         //if bigger than minimum, allright!
+   
+         [self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint withConstant:finalWidth+20];
+        // [self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
+         //              withConstant:customAttributes.messageBubbleContainerViewWidth];
+     
+     }
+
     if ([self isKindOfClass:[JSQMessagesCollectionViewCellOutgoing class]])
     {
+       
         
         JSQMessagesCollectionViewCellOutgoing *selfie=(JSQMessagesCollectionViewCellOutgoing*)self;
-        CGSize minimalsize = [selfie.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:15.0f]}];
-        
+       // CGSize minimalWidth = [selfie.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:15.0f]}];
+        CGSize minimalWidth = CGSizeMake(0, 0);
         CGFloat finalWidth;
-        if (customAttributes.messageBubbleContainerViewWidth>(minimalsize.width+25))
+        
+        //Calcular tamanho.
+        //Aplicar se maior que mininmo
+        
+        
+        if (customAttributes.messageBubbleContainerViewWidth>(minimalWidth.width+25))
         {
             finalWidth=customAttributes.messageBubbleContainerViewWidth;
             //[self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
                           //withConstant:customAttributes.messageBubbleContainerViewWidth];
-            
+
         }
         else
         {
-            finalWidth=minimalsize.width+25;
+            finalWidth=minimalWidth.width+25;
             //[self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
                        // withConstant:minimalsize.width+25];
             
         }
+        
         // Values are fractional -- you should take the ceilf to get equivalent values
-     
         //if bigger than minimum, allright!
         
-        self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint withConstant:finalWidth];
+        
+        
+        self.textViewFrameInsets = UIEdgeInsetsMake(self.textViewFrameInsets.top-29.0f, self.textViewFrameInsets.left, self.textViewFrameInsets.bottom, self.textViewFrameInsets.right);
+        
+        self.textView.contentInset=UIEdgeInsetsMake(self.textView.contentInset.top+200, self.textView.contentInset.left, self.textView.contentInset.bottom+200, self.textView.contentInset.right);
+       // [self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
+              //        withConstant:customAttributes.messageBubbleContainerViewWidth];
+        [self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint withConstant:finalWidth];
         
     }
+    
     
     
     
@@ -231,12 +278,16 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     [self jsq_updateConstraint:self.cellBottomLabelHeightConstraint
                   withConstant:customAttributes.cellBottomLabelHeight];
 
+    
+    
     if ([self isKindOfClass:[JSQMessagesCollectionViewCellIncoming class]]) {
         self.avatarViewSize = customAttributes.incomingAvatarViewSize;
     }
     else if ([self isKindOfClass:[JSQMessagesCollectionViewCellOutgoing class]]) {
         self.avatarViewSize = customAttributes.outgoingAvatarViewSize;
     }
+     
+    
 }
 
 - (void)setHighlighted:(BOOL)highlighted

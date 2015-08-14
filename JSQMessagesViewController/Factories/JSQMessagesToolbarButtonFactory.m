@@ -48,8 +48,8 @@
 
     UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [sendButton setTitle:sendTitle forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor jsq_messageBubbleBlueColor] forState:UIControlStateNormal];
-    [sendButton setTitleColor:[[UIColor jsq_messageBubbleBlueColor] jsq_colorByDarkeningColorWithValue:0.1f] forState:UIControlStateHighlighted];
+    [sendButton setTitleColor:[UIColor colorWithRed:0.96 green:0.396 blue:0.26 alpha:1] forState:UIControlStateNormal];
+    [sendButton setTitleColor:[[UIColor colorWithRed:0.96 green:0.396 blue:0.26 alpha:1] jsq_colorByDarkeningColorWithValue:0.1f] forState:UIControlStateHighlighted];
     [sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 
     sendButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];

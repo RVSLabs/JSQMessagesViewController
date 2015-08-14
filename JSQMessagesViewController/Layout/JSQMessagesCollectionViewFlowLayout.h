@@ -199,4 +199,8 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  */
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
+
+- (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath requiringExtraBottomMarginOff:(CGFloat)margin;
+
+
 @end

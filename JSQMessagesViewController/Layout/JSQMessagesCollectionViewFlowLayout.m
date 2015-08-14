@@ -34,8 +34,9 @@
 #import "UIImage+JSQMessages.h"
 
 
+
 const CGFloat kJSQMessagesCollectionViewCellLabelHeightDefault = 20.0f;
-const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
+const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 33.0f;
 
 
 @interface JSQMessagesCollectionViewFlowLayout ()
@@ -79,7 +80,7 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
 {
     self.scrollDirection = UICollectionViewScrollDirectionVertical;
     self.sectionInset = UIEdgeInsetsMake(10.0f, 4.0f, 10.0f, 4.0f);
-    self.minimumLineSpacing = 4.0f;
+    self.minimumLineSpacing = 10.0f;
     
     _bubbleImageAssetWidth = [UIImage jsq_bubbleCompactImage].size.width;
     
@@ -100,7 +101,7 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     _messageBubbleTextViewFrameInsets = UIEdgeInsetsMake(32.0f, 0.0f, 0.0f, 6.0f);
     
    
-    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(2.0f, 14.0f, 7.0f, 14.0f);
+    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(2.0f, 14.0f, -24.0f, 14.0f);
     
     CGSize defaultAvatarSize = CGSizeMake(kJSQMessagesCollectionViewAvatarSizeDefault, kJSQMessagesCollectionViewAvatarSizeDefault);
     _incomingAvatarViewSize = defaultAvatarSize;
@@ -468,7 +469,11 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
         CGSize stringSize = CGRectIntegral(stringRect).size;
         
         CGFloat verticalContainerInsets = self.messageBubbleTextViewTextContainerInsets.top + self.messageBubbleTextViewTextContainerInsets.bottom;
+        
+        
+        
         CGFloat verticalFrameInsets = self.messageBubbleTextViewFrameInsets.top + self.messageBubbleTextViewFrameInsets.bottom;
+       
         
         //  add extra 2 points of space, because `boundingRectWithSize:` is slightly off
         //  not sure why. magix. (shrug) if you know, submit a PR
@@ -482,7 +487,7 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     
     [self.messageBubbleCache setObject:[NSValue valueWithCGSize:finalSize] forKey:@([messageItem messageHash])];
     
-    return CGSizeMake(300, finalSize.height);
+    return finalSize;
 }
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -496,6 +501,13 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     finalHeight += attributes.cellBottomLabelHeight;
     
     return CGSizeMake(self.itemWidth, ceilf(finalHeight));
+}
+
+- (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath requiringExtraBottomMarginOff:(CGFloat)margin
+{
+    CGSize size=[self sizeForItemAtIndexPath:indexPath];
+    
+    return CGSizeMake(size.width,size.height+margin);
 }
 
 - (void)jsq_configureMessageCellLayoutAttributes:(JSQMessagesCollectionViewLayoutAttributes *)layoutAttributes
